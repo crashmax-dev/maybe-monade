@@ -1,9 +1,7 @@
 import test from 'ava'
 import { Maybe } from '../src/maybe.js'
-import { ErrorMessages } from '../src/utils.js'
 import { getUserById, getUserToken } from './fixtures/user.js'
 import type { IAppUser } from './fixtures/user'
-import type { Fn } from 'src/types'
 
 test('from some function', (t) => {
   const div = (a: number, b: number) => a / b
@@ -23,22 +21,11 @@ test('from some function returning null', (t) => {
   t.deepEqual(mapped_result, Maybe.none())
 })
 
-test('from undefined function', (t) => {
-  // callback which could be empty
-  // eslint-disable-next-line
-  const callback: any = undefined
-  const wrappedCallback = Maybe.fromFunction<number>(callback)
-
-  // executing undefined function returns None
-  // instead of throwing "undefined is not a function" Error
-  const result = wrappedCallback.apply()
-  t.deepEqual(result, Maybe.none())
-})
-
 test('from throwable function', (t) => {
   const throws = (): number => {
     throw new Error('error')
   }
+
   const wrapped = Maybe.fromFunction<number>(throws)
   const wrappedResult = wrapped.applySafe()
   t.deepEqual(wrappedResult, Maybe.none())
@@ -68,20 +55,6 @@ test('should return the right value', (t) => {
   t.is(strVal, '12')
 })
 
-test('should throw error', (t) => {
-  t.throws(
-    () => Maybe.some(null),
-    { message: ErrorMessages.EMPTY_VALUE }
-  )
-})
-
-test('should throw an error', (t) => {
-  t.throws(
-    () => Maybe.some(null),
-    { message: ErrorMessages.EMPTY_VALUE }
-  )
-})
-
 test('should add one', (t) => {
   const just2 = Maybe.fromValue(3.0)
   const add = (x: number) => x + 1
@@ -93,30 +66,6 @@ test('should add one', (t) => {
   t.is(just3.get(), 3.0 + 1)
   t.is(just2.map(div4).get(), '13')
   t.deepEqual(justTab.map(addToTab).get(), [2, 3, 4])
-})
-
-test('orElse', (t) => {
-  const num = Maybe
-    .none()
-    .orElse(() => Maybe.fromValue(2))
-
-  t.deepEqual(num, Maybe.fromValue(2))
-})
-
-test('do', (t) => {
-  const value = Maybe
-    .fromValue(2)
-    .do(null as unknown as Fn<number>)
-
-  t.deepEqual(value, Maybe.none())
-})
-
-test('flatMap', (t) => {
-  const value = Maybe
-    .fromValue(2)
-    .flatMap(() => Maybe.fromValue(2))
-
-  t.deepEqual(value, Maybe.fromValue(2))
 })
 
 test('should filter', (t) => {

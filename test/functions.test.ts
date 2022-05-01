@@ -1,5 +1,7 @@
 import test from 'ava'
 import { Maybe } from '../src/maybe.js'
+import { ErrorMessages } from '../src/utils.js'
+import type { Fn } from '../src/types'
 
 test('getOrElse', (t) => {
   const value = Maybe
@@ -31,7 +33,7 @@ test('map', (t) => {
   t.deepEqual(value, Maybe.some(3))
 })
 
-test('flatmap', (t) => {
+test('flatMap', (t) => {
   const value = Maybe
     .some(2)
     .flatMap(x => Maybe.some(x).map(y => y + 1))
@@ -49,6 +51,12 @@ test('get', (t) => {
 })
 
 test('do', (t) => {
+  const noneValue = Maybe
+    .fromValue(2)
+    .do(null as unknown as Fn<number>)
+
+  t.deepEqual(noneValue, Maybe.none())
+
   Maybe
     .some(2)
     .do((v) => t.is(v, 2))
@@ -70,4 +78,22 @@ test('isEmpty', (t) => {
 test('exists', (t) => {
   const value = Maybe.some(2)
   t.truthy(value.exists())
+})
+
+test('should throw an errors', (t) => {
+  t.throws(
+    () => Maybe.some(null),
+    { message: ErrorMessages.EMPTY_VALUE }
+  )
+
+  t.throws(
+    () => Maybe.none().get(),
+    { message: ErrorMessages.GET_EMPTY_VALUE }
+  )
+
+  t.throws(
+    // eslint-disable-next-line
+    () => Maybe.fromFunction(null as any),
+    { message: ErrorMessages.EMPTY_CALLBACK }
+  )
 })
