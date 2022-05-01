@@ -1,1 +1,2 @@
-export type Fn<R> = (...args: unknown[]) => R
+// eslint-disable-next-line
+export type Fn<R> = (...args: any[]) => R

@@ -3,5 +3,8 @@
   "env": {
     "node": true,
     "browser": true
+  },
+  "rules": {
+    "@typescript-eslint/restrict-plus-operands": "off"
   }
 }
