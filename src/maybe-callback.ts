@@ -9,8 +9,8 @@ export class MaybeCallback<T> {
    * return an instance of Maybe wrapping an empty value
    */
   public static none<R>(): MaybeCallback<R> {
-    // @ts-ignore
-    return new MaybeCallback(null)
+    // eslint-disable-next-line
+    return new MaybeCallback(null as any)
   }
 
   /**
@@ -19,10 +19,11 @@ export class MaybeCallback<T> {
    * @param callback
    */
   public static some<R>(callback: Fn<R>): MaybeCallback<R> {
-    if (typeof callback !== 'function') {
-      throw new Error(ErrorMessages.EMPTY_CALLBACK)
+    if (typeof callback === 'function') {
+      return new MaybeCallback(callback)
     }
-    return new MaybeCallback(callback)
+
+    throw new Error(ErrorMessages.EMPTY_CALLBACK)
   }
 
   /**
@@ -59,7 +60,7 @@ export class MaybeCallback<T> {
 
     try {
       return Maybe.fromValue<T>(this.callback.apply(null, args))
-    } catch (ex) {
+    } catch {
       return Maybe.none<T>()
     }
   }

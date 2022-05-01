@@ -16,10 +16,11 @@ export class Maybe<T> {
    * @param value the value to wrap in an instance of Maybe
    */
   public static some<T>(value: T): Maybe<T> {
-    if (isNullOrUndefined(value)) {
-      throw Error(ErrorMessages.EMPTY_VALUE)
+    if (!isNullOrUndefined(value)) {
+      return new Maybe(value)
     }
-    return new Maybe(value)
+
+    throw new Error(ErrorMessages.EMPTY_VALUE)
   }
 
   /**
@@ -27,9 +28,11 @@ export class Maybe<T> {
    * @param value value to wrap into a Maybe
    */
   public static fromValue<T>(value: T): Maybe<T> {
-    return isNullOrUndefined(value)
-      ? Maybe.none<T>()
-      : Maybe.some(value)
+    if (isNullOrUndefined(value)) {
+      return Maybe.none<T>()
+    } else {
+      return Maybe.some(value)
+    }
   }
 
   /**
@@ -37,10 +40,11 @@ export class Maybe<T> {
    * @param func callback to wrap into a Maybe
    */
   public static fromFunction<R>(func: Fn<R>): MaybeCallback<R> {
-    if (typeof func !== 'function') {
-      return MaybeCallback.none<R>()
+    if (typeof func === 'function') {
+      return MaybeCallback.some<R>(func)
     }
-    return MaybeCallback.some<R>(func)
+
+    throw Error(ErrorMessages.EMPTY_CALLBACK)
   }
 
   private constructor(private value: T | null) { }
@@ -74,9 +78,11 @@ export class Maybe<T> {
    * return the wrapped value if nonempty, otherwise the provided default value.
    */
   public getOrElse(defaultValue: T): T {
-    return this.isEmpty()
-      ? defaultValue
-      : this.value!
+    if (this.isEmpty()) {
+      return defaultValue
+    } else {
+      return this.value!
+    }
   }
 
   /**
@@ -85,9 +91,11 @@ export class Maybe<T> {
    * @param alternative the function to invoke
    */
   public orElse(alternative: () => Maybe<T>): Maybe<T> {
-    return this.exists()
-      ? Maybe.some(this.value!)
-      : alternative()
+    if (this.exists()) {
+      return Maybe.some(this.value!)
+    } else {
+      return alternative()
+    }
   }
 
   /**
@@ -96,9 +104,11 @@ export class Maybe<T> {
    * @param fmap the function to apply
    */
   public map<R>(fmap: (value: T) => R): Maybe<R> {
-    return this.exists()
-      ? Maybe.some(fmap(this.value!))
-      : Maybe.none()
+    if (this.exists()) {
+      return Maybe.some(fmap(this.value!))
+    } else {
+      return Maybe.none()
+    }
   }
 
   /**
@@ -107,9 +117,11 @@ export class Maybe<T> {
    * @param func the function to apply
    */
   public flatMap<R>(func: (value: T) => Maybe<R>): Maybe<R> {
-    return this.exists()
-      ? func(this.value!)
-      : Maybe.none()
+    if (this.exists()) {
+      return func(this.value!)
+    } else {
+      return Maybe.none()
+    }
   }
 
   /**
@@ -133,9 +145,10 @@ export class Maybe<T> {
    * @param predicate a predicate to apply to the value if nonempty
    */
   public filter(predicate: (x: T) => boolean): Maybe<T> {
-    return this.exists()
-      && predicate(this.value!)
-      ? Maybe.some(this.value!)
-      : Maybe.none()
+    if (this.exists() && predicate(this.value!)) {
+      return Maybe.some(this.value!)
+    } else {
+      return Maybe.none()
+    }
   }
 }
