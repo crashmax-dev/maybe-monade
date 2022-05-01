@@ -1,7 +1,7 @@
 {
-  "name": "ts-esm",
+  "name": "maybe-monade",
   "version": "1.0.0",
-  "description": "ts-esm template",
+  "description": "maybe-monade template",
   "type": "module",
   "exports": "./dist/index.js",
   "types": "dist",
@@ -11,13 +11,13 @@
   ],
   "keywords": [],
   "license": "MIT",
-  "homepage": "https://github.com/crashmax-dev/ts-esm#readme",
+  "homepage": "https://github.com/crashmax-dev/maybe-monade#readme",
   "bugs": {
-    "url": "https://github.com/crashmax-dev/ts-esm/issues"
+    "url": "https://github.com/crashmax-dev/maybe-monade/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/crashmax-dev/ts-esm.git"
+    "url": "git+https://github.com/crashmax-dev/maybe-monade.git"
   },
   "scripts": {
     "start": "npm run build && cross-env NODE_ENV=production node dist/index.js",
