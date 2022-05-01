@@ -2,8 +2,8 @@ import test from 'ava'
 import { Maybe } from '../src/maybe.js'
 import { ErrorMessages } from '../src/utils.js'
 import { getUserById, getUserToken } from './fixtures/user.js'
-import type { IAppUser } from './fixtures/user.js'
-import type { Fn } from 'src/types.js'
+import type { IAppUser } from './fixtures/user'
+import type { Fn } from 'src/types'
 
 test('from some function', (t) => {
   const div = (a: number, b: number) => a / b
