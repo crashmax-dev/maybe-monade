@@ -1,4 +1,4 @@
-import { Maybe } from './maybe'
+import { Maybe } from './maybe.js'
 
-export { Maybe } from './maybe'
+export { Maybe } from './maybe.js'
 export default Maybe

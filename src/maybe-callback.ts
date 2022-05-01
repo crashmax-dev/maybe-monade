@@ -1,5 +1,5 @@
-import { Maybe } from './maybe'
-import { ErrorMessages } from './utils'
+import { Maybe } from './maybe.js'
+import { ErrorMessages } from './utils.js'
 import type { Fn } from './types'
 
 export class MaybeCallback<T> {

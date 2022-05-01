@@ -1,5 +1,5 @@
-import { MaybeCallback } from './maybe-callback'
-import { ErrorMessages, isNullOrUndefined } from './utils'
+import { MaybeCallback } from './maybe-callback.js'
+import { ErrorMessages, isNullOrUndefined } from './utils.js'
 import type { Fn } from './types'
 
 export class Maybe<T> {
