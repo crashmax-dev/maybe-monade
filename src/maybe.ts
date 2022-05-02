@@ -3,6 +3,8 @@ import { ErrorMessages, isNullOrUndefined } from './utils.js'
 import type { Fn } from './types'
 
 export class Maybe<T> {
+  private constructor(private value: T | null) { }
+
   /**
    * Return an instance of Maybe wrapping an empty value
    */
@@ -47,8 +49,6 @@ export class Maybe<T> {
     throw Error(ErrorMessages.EMPTY_CALLBACK)
   }
 
-  private constructor(private value: T | null) { }
-
   /**
    * return true if the wrapped value is empty, false otherwise
    */
@@ -69,9 +69,9 @@ export class Maybe<T> {
   public get(): T {
     if (this.exists()) {
       return this.value!
-    } else {
-      throw new Error(ErrorMessages.GET_EMPTY_VALUE)
     }
+
+    throw new Error(ErrorMessages.GET_EMPTY_VALUE)
   }
 
   /**

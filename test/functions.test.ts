@@ -92,7 +92,6 @@ test('should throw an errors', (t) => {
   )
 
   t.throws(
-    // eslint-disable-next-line
     () => Maybe.fromFunction(null as any),
     { message: ErrorMessages.EMPTY_CALLBACK }
   )

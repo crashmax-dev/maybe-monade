@@ -5,6 +5,7 @@
     "browser": true
   },
   "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/restrict-plus-operands": "off"
   }
 }

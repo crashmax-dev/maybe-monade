@@ -9,7 +9,6 @@ export class MaybeCallback<T> {
    * return an instance of Maybe wrapping an empty value
    */
   public static none<R>(): MaybeCallback<R> {
-    // eslint-disable-next-line
     return new MaybeCallback(null as any)
   }
 
